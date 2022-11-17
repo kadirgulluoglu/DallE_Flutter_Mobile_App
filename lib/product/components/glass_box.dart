@@ -5,12 +5,14 @@ class GlassContainer extends StatelessWidget {
   final double? height;
   final double? width;
   final Widget child;
+  final Color color;
   final bool isCircular;
 
   const GlassContainer({
     super.key,
-    this.height = 200,
-    this.width = 200,
+    this.height,
+    this.width,
+    this.color = Colors.white,
     required this.child,
     this.isCircular = false,
   });
@@ -33,7 +35,7 @@ class GlassContainer extends StatelessWidget {
             //gradient
             Container(
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.white.withOpacity(0.2)),
+                border: Border.all(color: color.withOpacity(0.2)),
                 borderRadius: isCircular
                     ? context.circularRadius
                     : context.containerRadius,
@@ -41,15 +43,13 @@ class GlassContainer extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Colors.white.withOpacity(0.4),
-                    Colors.white.withOpacity(0.1),
+                    color.withOpacity(0.4),
+                    color.withOpacity(0.1),
                   ],
                 ),
               ),
+              child: child, //child
             ),
-
-            //child
-            child,
           ],
         ),
       ),
