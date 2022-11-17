@@ -1,0 +1,1 @@
+enum CacheStatus { available, notHave }
