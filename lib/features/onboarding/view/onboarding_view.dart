@@ -1,7 +1,10 @@
 import 'package:dalle_flutter_mobile_app/core/extension/context_extensions.dart';
+import 'package:dalle_flutter_mobile_app/features/home/view/home_view.dart';
+import 'package:dalle_flutter_mobile_app/features/home/viewmodel/home_viewmodel.dart';
+import 'package:dalle_flutter_mobile_app/product/components/custom_logo.dart';
 import 'package:dalle_flutter_mobile_app/product/components/glass_box.dart';
-import 'package:dalle_flutter_mobile_app/product/enum/image_enum.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../product/components/large_text.dart';
 import '../../../product/components/text.dart';
@@ -34,7 +37,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = PageController();
   }
@@ -53,7 +55,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               Positioned(
                 top: 20,
                 width: context.width,
-                child: _buildLogo(),
+                child: CustomLogo(),
               ),
               Positioned(
                 bottom: context.height * .15,
@@ -111,13 +113,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     );
   }
 
-  Center _buildLogo() {
-    return Center(
-      child: SizedBox(
-          height: 100, width: 100, child: Image.asset(AssetsEnum.logo.toPng())),
-    );
-  }
-
   Row _buildDots(int index) {
     return Row(
       children: List.generate(
@@ -153,16 +148,15 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
   void _buildOnPressRight(int index) {
     if (index == imagePath.length - 1) {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) =>
-      //         ChangeNotifierProvider(
-      //       create: (context) => AuthViewModel(),
-      //       child: const LoginView(),
-      //     ),
-      //   ),
-      // );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+            create: (context) => HomeViewModel(),
+            child: const HomeView(),
+          ),
+        ),
+      );
     } else {
       _controller.nextPage(
           duration: const Duration(milliseconds: 600),
@@ -171,18 +165,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   }
 
   void _buildOnPressLeft(int index) {
-    if (index == 0) {
-      // Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) =>
-      //         ChangeNotifierProvider(
-      //       create: (context) => AuthViewModel(),
-      //       child: const LoginView(),
-      //     ),
-      //   ),
-      // );
-    } else {
+    if (index != 0) {
       _controller.previousPage(
           duration: const Duration(milliseconds: 600),
           curve: Curves.linearToEaseOut);
