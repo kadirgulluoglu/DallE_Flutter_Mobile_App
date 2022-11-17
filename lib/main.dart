@@ -1,8 +1,10 @@
 import 'package:dalle_flutter_mobile_app/features/onboarding/view/onboarding_view.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'core/init/theme/ligth/app_theme_ligth.dart';
 
-void main() {
+Future<void> main() async {
+  await Hive.initFlutter();
   runApp(const MyApp());
 }
 
