@@ -1,5 +1,6 @@
 enum AssetsEnum {
-  logo("logo");
+  logo("logo"),
+  background("background");
 
   String toPng() => 'assets/images/$name.png';
   String toJpg() => 'assets/images/$name.jpg';
