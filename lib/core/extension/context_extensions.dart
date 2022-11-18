@@ -60,6 +60,12 @@ extension RadiusExtension on BuildContext {
       );
 }
 
+extension StringExtension on String {
+  String firstUpperCase() {
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+}
+
 extension PaddingExtensionSymetric on BuildContext {
   EdgeInsets get paddingLowVertical => EdgeInsets.symmetric(vertical: lowValue);
   EdgeInsets get paddingNormalVertical =>
