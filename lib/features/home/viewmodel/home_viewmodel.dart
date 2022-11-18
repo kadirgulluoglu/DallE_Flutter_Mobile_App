@@ -41,8 +41,12 @@ class HomeViewModel with ChangeNotifier {
       state = ViewState.busy;
       var translationPrompt =
           await translator.translate(prompt, from: 'tr', to: 'en');
+
+      print(typeList[selectedTypeIndex].text! + translationPrompt.text);
       dallEModel = await _service.getImage(
-          prompt: translationPrompt.text, apiKey: apiKey);
+          prompt: typeList[selectedTypeIndex].text! + translationPrompt.text,
+          apiKey: apiKey);
+
       await createHistoryImageModel(dallEModel?.data ?? [], prompt);
 
       state = ViewState.idle;
@@ -79,9 +83,10 @@ class HomeViewModel with ChangeNotifier {
   //const List
   List<ImageTypeModel> typeList = [
     ImageTypeModel(
-      title: "Boş",
-      icon: Icons.hourglass_empty,
+      title: "Filtresiz",
+      icon: Icons.nearby_off,
       text: "",
+      isSelected: true,
     ),
     ImageTypeModel(
       title: "3D Render",
@@ -91,20 +96,39 @@ class HomeViewModel with ChangeNotifier {
     ImageTypeModel(
       title: "Dijital",
       icon: Icons.nature,
-      text: "3D Render Of",
+      text: "Digital Art",
     ),
     ImageTypeModel(
-      title: "3D Render",
-      icon: Icons.animation,
-      text: "3D Render Of",
+      title: "Neon",
+      icon: Icons.light,
+      text: "A futuristic neon of",
+    ),
+    ImageTypeModel(
+      title: "Pastel",
+      icon: Icons.invert_colors_on,
+      text: "An oil pastel drawing of",
+    ),
+    ImageTypeModel(
+      title: "Kara Kalem",
+      icon: Icons.border_color,
+      text: "A hand drawn sketch",
     ),
   ];
+
+  int _selectedTypeIndex = 0;
+
+  int get selectedTypeIndex => _selectedTypeIndex;
+
+  set selectedTypeIndex(int value) {
+    _selectedTypeIndex = value;
+    notifyListeners();
+  }
 
   void changeSelected(int index) {
     for (int i = 0; i < typeList.length; i++) {
       typeList[i].isSelected = false;
     }
     typeList[index].isSelected = true;
-    notifyListeners();
+    selectedTypeIndex = index;
   }
 }
