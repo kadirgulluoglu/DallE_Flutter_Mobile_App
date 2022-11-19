@@ -41,16 +41,14 @@ class HomeViewModel with ChangeNotifier {
       state = ViewState.busy;
       var translationPrompt =
           await translator.translate(prompt, from: 'tr', to: 'en');
-
-      print(typeList[selectedTypeIndex].text! + translationPrompt.text);
       dallEModel = await _service.getImage(
           prompt: typeList[selectedTypeIndex].text! + translationPrompt.text,
           apiKey: apiKey);
 
       await createHistoryImageModel(dallEModel?.data ?? [], prompt);
-
       state = ViewState.idle;
     } catch (e) {
+      print(e);
       state = ViewState.error;
     }
   }
