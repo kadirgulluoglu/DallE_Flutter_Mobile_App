@@ -1,11 +1,11 @@
 import 'dart:ui';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dalle_flutter_mobile_app/core/extension/context_extensions.dart';
 import 'package:dalle_flutter_mobile_app/features/home/viewmodel/home_viewmodel.dart';
 import 'package:dalle_flutter_mobile_app/product/components/background_image.dart';
 import 'package:dalle_flutter_mobile_app/product/components/custom_logo.dart';
 import 'package:dalle_flutter_mobile_app/product/components/glass_box.dart';
+import 'package:dalle_flutter_mobile_app/product/components/image_container.dart';
 import 'package:dalle_flutter_mobile_app/product/components/large_text.dart';
 import 'package:dalle_flutter_mobile_app/product/components/text.dart';
 import 'package:flutter/material.dart';
@@ -23,12 +23,43 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView>
+    with SingleTickerProviderStateMixin {
+  //const animation
+  late TransformationController _transformationController;
+  late AnimationController _animationController;
+  Animation<Matrix4>? _animation;
+
+  //const String
+  final String _firstTimeText = "Hadi şimdi DALL-E ile yazıyı resme çevirin";
+  final String _historyButtonText =
+      " Geçmiş aramalarınızı görmek için tıklayınız";
+  final String _resultsText = "🔥 Sonuçlar";
+  final String _loadingText = "Lütfen Yüklenirken Bekleyiniz...";
+  final String _createText = "OLUŞTUR";
+  final String _hintText = "Lütfen detaylı bir açıklama giriniz";
+
+  //const Controller
   late final TextEditingController _searchController;
   @override
   void initState() {
     super.initState();
     _searchController = TextEditingController();
+
+    _transformationController = TransformationController();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    )..addListener(
+        () => _transformationController.value = _animation!.value,
+      );
+  }
+
+  @override
+  void dispose() {
+    _transformationController.dispose();
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,7 +70,7 @@ class _HomeViewState extends State<HomeView> {
         children: [
           BackgroundImage(context: context),
           BackdropFilter(
-            filter: ImageFilter.blur(sigmaY: 10, sigmaX: 10),
+            filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
             child: Container(),
           ),
           SingleChildScrollView(
@@ -66,14 +97,16 @@ class _HomeViewState extends State<HomeView> {
 
                   //Sorgulanan resmi göstermesi için
                   viewModel.state == ViewState.busy
-                      ? Expanded(child: _buildLoadingWidget(context))
+                      ? Expanded(flex: 6, child: _buildLoadingWidget(context))
                       : viewModel.state == ViewState.idle
                           ? Expanded(
+                              flex: 6,
                               child: _buildResultImageList(context, viewModel))
-                          : Expanded(child: _buildFirstTimeText()),
-                  _buildSpacer(.02),
+                          : Expanded(flex: 6, child: _buildFirstTimeText()),
                   viewModel.cacheStatus == CacheStatus.available
-                      ? _buildHistorySearchButton(context, viewModel)
+                      ? Expanded(
+                          flex: 1,
+                          child: _buildHistorySearchButton(context, viewModel))
                       : const SizedBox.shrink()
                 ],
               ),
@@ -87,7 +120,7 @@ class _HomeViewState extends State<HomeView> {
   Center _buildFirstTimeText() {
     return Center(
       child: CustomText(
-        text: "Hadi şimdi DALL-E ile yazıyı resme çevirin",
+        text: _firstTimeText,
         isCenter: true,
       ),
     );
@@ -108,7 +141,7 @@ class _HomeViewState extends State<HomeView> {
               children: [
                 const Icon(Icons.history, color: Colors.white),
                 CustomText(
-                  text: " Geçmiş aramalarınızı görmek için tıklayınız",
+                  text: _historyButtonText,
                 ),
               ],
             ),
@@ -135,7 +168,7 @@ class _HomeViewState extends State<HomeView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomLargeText(text: "🔥 Sonuçlar"),
+          CustomLargeText(text: _resultsText),
           _buildSpacer(.03),
           SizedBox(
             height: context.height * 0.4,
@@ -143,26 +176,32 @@ class _HomeViewState extends State<HomeView> {
               itemCount: viewModel.dallEModel?.data?.length ?? 0,
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: context.paddingLow,
-                  child: ClipRRect(
-                    borderRadius: context.containerRadius,
-                    child: SizedBox(
-                      height: context.height * .3,
-                      child: CachedNetworkImage(
-                        imageUrl: viewModel.dallEModel?.data?[index].url ?? "",
-                        progressIndicatorBuilder:
-                            (context, url, downloadProgress) => GlassContainer(
-                          width: context.width * .5,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                                value: downloadProgress.progress),
-                          ),
-                        ),
-                        fit: BoxFit.fill,
-                        errorWidget: (context, url, error) => Container(),
-                      ),
-                    ),
+                var dallEModel = viewModel.dallEModel;
+                return InkWell(
+                  onTap: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Container(
+                                width: 300,
+                                height: 600,
+                                color: Colors.red,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: ImageContainer(
+                    context: context,
+                    model: dallEModel,
+                    index: index,
                   ),
                 );
               },
@@ -171,6 +210,19 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
     );
+  }
+
+  void resetAnimation() {
+    _animation = Matrix4Tween(
+      begin: _transformationController.value,
+      end: Matrix4.identity(),
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeIn,
+      ),
+    );
+    _animationController.forward(from: 0);
   }
 
   SizedBox _buildLoadingWidget(BuildContext context) {
@@ -187,7 +239,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
           _buildSpacer(.03),
-          CustomText(text: "Lütfen Yüklenirken Bekleyiniz...")
+          CustomText(text: _loadingText)
         ],
       ),
     );
@@ -201,7 +253,7 @@ class _HomeViewState extends State<HomeView> {
         height: context.height * .04,
         child: TextButton(
           child: CustomText(
-            text: "OLUŞTUR",
+            text: _createText,
           ),
           onPressed: () {
             if (_searchController.text.isNotEmpty) {
@@ -271,9 +323,8 @@ class _HomeViewState extends State<HomeView> {
             child: TextFormField(
               readOnly: viewModel.state == ViewState.busy ? true : false,
               style: const TextStyle(color: Colors.white),
-              decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Lütfen detaylı bir açıklama giriniz"),
+              decoration: InputDecoration(
+                  border: InputBorder.none, hintText: _hintText),
               controller: _searchController,
             ),
           ),
