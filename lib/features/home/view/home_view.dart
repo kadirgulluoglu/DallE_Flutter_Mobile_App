@@ -65,55 +65,58 @@ class _HomeViewState extends State<HomeView>
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<HomeViewModel>(context);
-    return Scaffold(
-      body: Stack(
-        children: [
-          BackgroundImage(context: context),
-          BackdropFilter(
-            filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
-            child: Container(),
-          ),
-          SingleChildScrollView(
-            child: SizedBox(
-              height: context.height,
-              width: context.width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: context.paddingLow,
-                    child: Column(
-                      children: [
-                        _buildSpacer(.07),
-                        CustomLogo(),
-                        _buildSearchBar(viewModel),
-                        _buildSpacer(.02),
-                        _buildImageStyle(viewModel),
-                        _buildElevatedButon(context, viewModel),
-                        _buildSpacer(.02),
-                      ],
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            BackgroundImage(context: context),
+            BackdropFilter(
+              filter: ImageFilter.blur(sigmaY: 50, sigmaX: 50),
+              child: Container(),
+            ),
+            SingleChildScrollView(
+              child: SizedBox(
+                height: context.height,
+                width: context.width,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: context.paddingLow,
+                      child: Column(
+                        children: [
+                          CustomLogo(),
+                          _buildSearchBar(viewModel),
+                          _buildSpacer(.02),
+                          _buildImageStyle(viewModel),
+                          _buildElevatedButon(context, viewModel),
+                          _buildSpacer(.02),
+                        ],
+                      ),
                     ),
-                  ),
 
-                  //Sorgulanan resmi göstermesi için
-                  viewModel.state == ViewState.busy
-                      ? Expanded(flex: 6, child: _buildLoadingWidget(context))
-                      : viewModel.state == ViewState.idle
-                          ? Expanded(
-                              flex: 6,
-                              child: _buildResultImageList(context, viewModel))
-                          : Expanded(flex: 6, child: _buildFirstTimeText()),
-                  viewModel.cacheStatus == CacheStatus.available
-                      ? Expanded(
-                          flex: 1,
-                          child: _buildHistorySearchButton(context, viewModel))
-                      : const SizedBox.shrink()
-                ],
+                    //Sorgulanan resmi göstermesi için
+                    viewModel.state == ViewState.busy
+                        ? Expanded(flex: 6, child: _buildLoadingWidget(context))
+                        : viewModel.state == ViewState.idle
+                            ? Expanded(
+                                flex: 6,
+                                child:
+                                    _buildResultImageList(context, viewModel))
+                            : Expanded(flex: 6, child: _buildFirstTimeText()),
+                    viewModel.cacheStatus == CacheStatus.available
+                        ? Expanded(
+                            flex: 1,
+                            child:
+                                _buildHistorySearchButton(context, viewModel))
+                        : const SizedBox.shrink()
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
