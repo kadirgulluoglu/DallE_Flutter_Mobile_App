@@ -48,7 +48,6 @@ class HomeViewModel with ChangeNotifier {
       await createHistoryImageModel(dallEModel?.data ?? [], prompt);
       state = ViewState.idle;
     } catch (e) {
-      print(e);
       state = ViewState.error;
     }
   }
