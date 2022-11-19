@@ -1,16 +1,22 @@
-# dalle_flutter_mobile_app
+# DALL-E image generator ai from text 🌍
+## I used OPENAI DALL-E image generator api with Flutter
 
-A new Flutter project.
+- [State Management: provider](https://pub.dev/packages/provider)
+- [Cache: Hive](https://pub.dev/packages/hive)
+- [Network: Dio](https://pub.dev/packages/dio)
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## Screenshots:
+|**Onboarding Screen** |
+| -------------- | 
+|<img src="https://github.com/kadirgulluoglu/DallE_Flutter_Mobile_App/blob/main/assets/screenshots/o1.png" width=30%> <img src="https://github.com/kadirgulluoglu/DallE_Flutter_Mobile_App/blob/main/assets/screenshots/o2.png" width=30%> <img src="https://github.com/kadirgulluoglu/DallE_Flutter_Mobile_App/blob/main/assets/screenshots/o3.png" width=30%>|
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+|**Loading Screen** |**Search Result Screen**|**Search Result Screen**|
+| ----------------- | ---------------------- | ---------------------- |
+|<img src="https://github.com/kadirgulluoglu/DallE_Flutter_Mobile_App/blob/main/assets/screenshots/loading.png" width=100%>|<img src="https://github.com/kadirgulluoglu/DallE_Flutter_Mobile_App/blob/main/assets/screenshots/search_result.png" width=100%>|<img src="https://github.com/kadirgulluoglu/DallE_Flutter_Mobile_App/blob/main/assets/screenshots/search_result_2.png" width=100%%>|
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+|**Splash Screen** |**History List Screen**|
+| ---------------- | ---------------------- |
+|<img src="https://github.com/kadirgulluoglu/DallE_Flutter_Mobile_App/blob/main/assets/screenshots/splash.png" width=80% >|<img src="https://github.com/kadirgulluoglu/DallE_Flutter_Mobile_App/blob/main/assets/screenshots/history_list.png" width=80% >|
+
