@@ -91,33 +91,6 @@ class HistorySearchView extends StatelessWidget {
     );
   }
 
-  // Container _buildImageContainer(
-  //     BuildContext context, DallEModel? historyModel, int index) {
-  //   return Container(
-  //     padding: context.paddingLow,
-  //     margin: context.paddingLow,
-  //     child: ClipRRect(
-  //       borderRadius: context.containerRadius,
-  //       child: SizedBox(
-  //         height: context.height * .4,
-  //         child: CachedNetworkImage(
-  //           imageUrl: historyModel?.data?[index].url ?? "",
-  //           progressIndicatorBuilder: (context, url, downloadProgress) =>
-  //               GlassContainer(
-  //             width: context.height * .3,
-  //             child: Center(
-  //               child:
-  //                   CircularProgressIndicator(value: downloadProgress.progress),
-  //             ),
-  //           ),
-  //           fit: BoxFit.fill,
-  //           errorWidget: (context, url, error) => Container(),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   Padding _buildTitle(BuildContext context, DallEModel? historyModel) {
     return Padding(
       padding: context.paddingLeft,
