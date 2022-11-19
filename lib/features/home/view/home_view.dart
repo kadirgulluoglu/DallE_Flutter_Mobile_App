@@ -85,6 +85,7 @@ class _HomeViewState extends State<HomeView>
                     padding: context.paddingLow,
                     child: Column(
                       children: [
+                        _buildSpacer(.07),
                         CustomLogo(),
                         _buildSearchBar(viewModel),
                         _buildSpacer(.02),
@@ -177,32 +178,10 @@ class _HomeViewState extends State<HomeView>
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 var dallEModel = viewModel.dallEModel;
-                return InkWell(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Container(
-                                width: 300,
-                                height: 600,
-                                color: Colors.red,
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: ImageContainer(
-                    context: context,
-                    model: dallEModel,
-                    index: index,
-                  ),
+                return ImageContainer(
+                  context: context,
+                  model: dallEModel,
+                  index: index,
                 );
               },
             ),
