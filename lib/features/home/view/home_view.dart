@@ -107,7 +107,7 @@ class _HomeViewState extends State<HomeView>
                             : Expanded(flex: 6, child: _buildFirstTimeText()),
                     viewModel.cacheStatus == CacheStatus.available
                         ? Expanded(
-                            flex: 1,
+                            flex: 2,
                             child:
                                 _buildHistorySearchButton(context, viewModel))
                         : const SizedBox.shrink()
