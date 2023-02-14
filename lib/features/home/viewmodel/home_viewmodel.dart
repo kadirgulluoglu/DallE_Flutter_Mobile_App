@@ -21,7 +21,7 @@ class HomeViewModel with ChangeNotifier {
   }
 
   final HomeService _service = HomeService.instance;
-  final String apiKey = "YOUR API KEY";
+  final String apiKey = "";
   final translator = GoogleTranslator();
 
   ViewState _state = ViewState.error;
@@ -84,6 +84,11 @@ class HomeViewModel with ChangeNotifier {
       icon: Icons.nearby_off,
       text: "",
       isSelected: true,
+    ),
+    ImageTypeModel(
+      title: "Gerçekçi",
+      icon: Icons.animation,
+      text: "in a photorealistic style",
     ),
     ImageTypeModel(
       title: "3D Render",
