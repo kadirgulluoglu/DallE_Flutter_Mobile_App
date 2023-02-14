@@ -21,7 +21,7 @@ class HomeViewModel with ChangeNotifier {
   }
 
   final HomeService _service = HomeService.instance;
-  final String apiKey = "";
+  final String apiKey = "YOUR API KEY";
   final translator = GoogleTranslator();
 
   ViewState _state = ViewState.error;
