@@ -45,7 +45,7 @@ dependencies:
   translator: ^0.1.7
 
   # network manager
-  dio: ^5.0.0
+  dio: ^5.1.1
 
   # state management
   provider: ^6.0.4
